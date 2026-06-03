@@ -146,8 +146,6 @@ High-level production steps:
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for the security model and reporting guidance.
-
 Important defaults:
 
 - Do not commit real secrets, client credentials, tenant-specific IDs, publish profiles, or `.user` files.
@@ -176,11 +174,3 @@ Office cache location on Windows:
 ```text
 %LOCALAPPDATA%\Microsoft\Office\16.0\Wef
 ```
-
-## Contributing
-
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, style, and pull request guidance.
-
-## License
-
-This project is licensed under the terms in [LICENSE](LICENSE).

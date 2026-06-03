@@ -1,45 +1,221 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="Scripts/jquery-3.6.0.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    
     <script src="Scripts/MessageBanner.js" type="text/javascript"></script>
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
-
-    <!-- To enable offline debugging using a local reference to Office.js, use:  -->
-    <!-- <script src="Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
-    <!-- <script src="Scripts/Office/1/office.js" type="text/javascript"></script>  -->
-
     <script src="Home.js" type="text/javascript"></script>
+
     <link href="Home.css" rel="stylesheet" type="text/css" />
     <link href="../Content/Button.css" rel="stylesheet" type="text/css" />
     <link href="../Content/MessageBanner.css" rel="stylesheet" type="text/css" />
-
-
-    <!-- For Office UI Fabric Core, go to https://aka.ms/office-ui-fabric to learn more. -->
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
 
-    <!-- To enable the offline use of Office UI Fabric Core, use: -->
-    <!-- link rel="stylesheet" href="Content/fabric.min.css" -->
+    <style>
+        body {
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+            background-color: white !important;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        .header {
+            background-color: #172430;
+            color: white;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+                font-family: 'Calibri', 'Segoe UI', sans-serif;
+                font-weight: 500;
+            }
+
+        .version-switch {
+            margin-top: 12px;
+            margin-bottom: 20px;
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        .disclaimer-section {
+            flex-grow: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+            .disclaimer-section p {
+                font-family: 'Calibri', 'Segoe UI', sans-serif;
+            }
+
+        .disclaimer-list-container {
+            margin-bottom: 20px;
+            border: 1px solid #edebe9;
+            border-radius: 4px;
+            padding: 12px;
+            background-color: #f9f9f9;
+            height: 200px; /* Reduced height */
+            overflow-y: auto;
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+            .disclaimer-list-container ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .disclaimer-list-container li {
+                padding: 8px 0;
+                border-bottom: 1px solid #edebe9;
+                font-family: 'Calibri', 'Segoe UI', sans-serif;
+                display: flex;
+                align-items: flex-start;
+            }
+
+                .disclaimer-list-container li:last-child {
+                    border-bottom: none;
+                }
+                
+                .disclaimer-list-container li label {
+                    margin-left: 8px;
+                    cursor: pointer;
+                }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .ms-Button {
+            margin: 0;
+            min-width: 120px;
+            padding: 8px 16px;
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        .ms-Button-label {
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        .checkbox-label {
+            margin-left: 8px;
+            font-weight: 500;
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        /* Apply Calibri to all labels, checkboxes and other form elements */
+        label, input, button, select, textarea {
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        /* Toggle switch styling */
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+    </style>
 </head>
 
-<!-- Office UI Fabric JS and it's components are no longer actively supported. Please see https://aka.ms/PnP-OfficeFabricReact for recommended Patterns and Practices -->
-<!-- <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css"> -->
-
-<body class="ms-font-m ms-welcome">
-    <div id="content-header">
-        <div class="padding">
-            <h1>Contoso</h1>
+<body class="ms-font-m">
+    <div class="app-container">
+        <div class="header">
+            <h1 style="text-align: center;"><img src="/images/logo.png" alt="MyCompany Disclaimers" style="max-height: 40px; max-width: 100%;" /></h1>
         </div>
-    </div>
-    <div id="content-main">
-        <div class="padding">
-            <p>Content Source</p>
-            <div id="disclaimer-source"></div>
-            <p>Position your cursor and choose the buttons below to add content to it.</p>
-            <div id="disclaimer-list"></div>
+
+        <div class="disclaimer-section">
+            <p class="ms-fontSize-14">Select the disclaimers you want to insert into your document:</p>
+
+            <div class="disclaimer-list-container">
+                <div id="disclaimer-list"></div>
+            </div>
+
+            <div id="useRichTextContainer" class="toggle-switch">
+                <label class="switch">
+                    <input type="checkbox" id="useRichText">
+                    <span class="slider"></span>
+                </label>
+                <span>Use Rich Text Format (HTML) when available</span>
+            </div>
+
+            <div class="actions">
+                <button id="insertSelectedDisclaimersAtCursor" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Insert at Cursor</span>
+                </button>
+                
+                <button id="insertSelectedDisclaimersAsHeader" class="ms-Button" style="margin-right: 5px;">
+                    <span class="ms-Button-label">Insert as Header</span>
+                </button>
+                
+                <button id="insertSelectedDisclaimersAsFooter" class="ms-Button">
+                    <span class="ms-Button-label">Insert as Footer</span>
+                </button>
+
+                <button id="insertSelectedDisclaimersAtEnd" class="ms-Button">
+                    <span class="ms-Button-label">Insert at Bottom</span>
+                </button>
+            </div>
         </div>
     </div>
 </body>

@@ -1,203 +1,186 @@
-# Disclaimers
+# Disclaimers Office Add-in
+
+Disclaimers is a sample Microsoft Office add-in that helps users insert centrally managed disclaimer or boilerplate text into Office documents and messages. It supports Word, Excel, PowerPoint, and Outlook through Office add-in manifests and a small ASP.NET Core Web API.
+
+The sample is designed for organizations that maintain approved response text, legal notices, classification markings, or other reusable snippets in a central source such as a SharePoint list.
+
+## Attribution
+
+This repository is a fork and public-friendly adaptation of [breakpoint7/Disclaimers](https://github.com/breakpoint7/Disclaimers), an Office Add-in sample project. The upstream repository history is preserved in git; the latest upstream commit in this branch is authored by `breakpoint7`. Changes after that point are public-release updates made for this version, including generic company naming, documentation cleanup, configuration guidance, and repository hygiene files.
+## Features
+
+- Office task pane add-in for Word, Excel, PowerPoint, and Outlook
+- Separate Outlook manifest for Outlook-specific add-in requirements
+- ASP.NET Core Web API backend
+- Demo API endpoint with hardcoded sample disclaimers
+- SharePoint list integration through Microsoft Graph
+- Optional rich text disclaimer support
+- Word-specific insertion into cursor position, header, footer, or end of document
+- Azure Key Vault configuration support
+- Azure Managed Identity support for production deployments
 
-This sample was created to show how an Office add-in could be used to provide standard, centrally managed disclaimer text into Office applications such as Outlook, Word, Excel, and PowerPoint.  For example, if you had standard legal disclaimers that you wanted to make easily accessible to users, you might manage a list of standard responses through a WebAPI and/or something like a SharePoint list and keep that up to date.  An Office add-in could provide the latest list to users and allow them to insert it into new content easily.
+## Repository Structure
 
-This solution consists of three projects:
+```text
+.
+├── DisclaimersManifest/
+│   └── Disclaimers.xml
+├── DisclaimersOutlook/
+│   └── DisclaimersOutlookManifest/
+│       └── DisclaimersOutlook.xml
+├── SharePointListApi/
+│   ├── Controllers/
+│   ├── Properties/
+│   ├── wwwroot/
+│   ├── Program.cs
+│   └── appsettings.json
+├── DEPLOYMENT.md
+├── DEVELOPER_GUIDE.md
+├── SECURITY.md
+└── SetupKeyVaultSecrets.ps1
+```
 
-**Disclaimers** – Office add-in (manifest) for Word, PowerPoint, and Excel
+## Architecture
 
-**DisclaimersOutlook** – Office add-in for Outlook (as of the time of this sample, Office still needs to be a separate add-in due to unique manifest requirements)
+The add-in is made of two main parts:
 
-**SharePointListApi** – A .NET Web API project used to host the add-in code and expose web APIs that supply a list of responses – one as a basic API that returns hard coded values (you could expand this to pull from any source) and another that retrieves responses from a SharePoint list.
+- **Office manifests** define which Office hosts are supported, where the task pane loads from, and how ribbon commands appear.
+- **Web application** hosts the task pane UI and backend APIs used to retrieve disclaimer content.
 
-# Requirements:
+Typical flow:
 
-Visual Studio 2022 with Office/SharePoint development workload installed.
+1. An Office app loads the add-in manifest.
+2. The manifest opens the task pane from the hosted web application.
+3. The task pane calls the backend API.
+4. The backend returns disclaimer content from either demo data or a SharePoint list.
+5. The user selects one or more disclaimers.
+6. Office.js inserts the selected content into the active document, presentation, workbook, or message.
 
-Familiarity with Office add-in development – See https://learn.microsoft.com/en-us/office/dev/add-ins/develop/develop-overview
+## Cloud Environment
 
-**Review of a few basic concepts:**
+This sample is configured for Azure Government by default:
 
-Office add-ins are essentially made up a of a manifest (XML in this case) that defines the capabilities and settings for each add-in and a Web App (where any code is hosted and runs).  Very simply stated, the manifest defines which types of Office app they support, includes UI elements to display, and links those UI elements to external web pages that render HTML and run JavaScript code in the context of the Office app.
+- Azure Web Apps: `.azurewebsites.us`
+- Azure Key Vault: `.vault.usgovcloudapi.net`
+- Microsoft Graph: `https://graph.microsoft.us`
+- Microsoft identity platform: `https://login.microsoftonline.us`
 
-To run, debug, or test an add-in – your Web App needs to be up and running to serve the pages used by the add-in.  If you are debugging from Visual Studio and using multiple startup projects, be sure the Web App starts first (the add-in depends on this).  If you deploy a finished add-in to your company, you need to make sure the Web App is running somewhere and that the manifest points to this site.
+For commercial Azure, update the relevant endpoints to `.com`, `vault.azure.net`, `https://graph.microsoft.com`, and `https://login.microsoftonline.com`.
 
-**Key components of this sample**
+## Prerequisites
 
-If you want to change the way the add-in looks or behaves
+- Visual Studio 2022 with Office/SharePoint development workload
+- .NET SDK compatible with the `SharePointListApi` project
+- Microsoft 365 account with access to the target Office apps
+- Azure subscription for hosted deployments
+- SharePoint site if using the SharePoint-backed disclaimer source
+- Microsoft 365 admin access for centralized add-in deployment
 
-•	Disclaimers.xml is the manifest for the add-in that runs in Excel, Word, and PowerPoint.
+## Quick Start: Demo API
 
-•	DisclaimersOutlook.xml is the manifest for the add-in that runs in Outlook.
+Use this path if you want to run the add-in without SharePoint integration first.
 
-•	Both add-ins use the Task pane as the primary UI.  See Task panes in Office Add-ins - Office Add-ins | Microsoft Learn (https://learn.microsoft.com/en-us/office/dev/add-ins/design/task-pane-add-ins)
+1. Open `Disclaimers.sln` in Visual Studio 2022.
+2. Restore NuGet packages and build the solution.
+3. Configure multiple startup projects:
+   - `SharePointListApi`: Start
+   - `Disclaimers`: Start
+   - `DisclaimersOutlook`: None initially
+4. Start debugging.
+5. Confirm the web app is available at `https://localhost:7057/Home.html`.
+6. Launch an Office host such as Word, Excel, or PowerPoint through the add-in project settings.
+7. Use the task pane to retrieve and insert sample disclaimers.
 
+If the Office add-in loads before the web app is ready, wait for the web app to finish starting and use the retry option in Office.
 
-In the SharePointListApi project, the wwwroot folder contains all static web files that the add-in directly interacts with.
+## SharePoint List Setup
 
-Home.html is the rendered in the Task Pane when the add-in runs.
+To use SharePoint as the disclaimer source, create a SharePoint list with these columns:
 
-Home.js contains the JavaScript code that calls the Web APIs to retrieve responses and render in the task pane.
+| Column | Type | Required | Purpose |
+| --- | --- | --- | --- |
+| `Title` | Single line of text | Yes | Display name for the disclaimer |
+| `Text` | Multiple lines of text | Yes | Plain text disclaimer content |
+| `Ver` | Single line of text | Yes | Version or revision label |
+| `RichText` | Multiple lines of text with rich text enabled | No | HTML-formatted disclaimer content |
+| `Priority` | Number | No | Optional sort order |
 
+After creating the list, store the SharePoint site ID and list ID in Key Vault using `SetupKeyVaultSecrets.ps1` or your normal secret-management process.
 
-**There are two controllers that do all the work.**
+## Configuration
 
-DisclaimersController.cs returns a hard coded set of responses to Home.js when a user clicks Web API as the source.
+Primary configuration lives in:
 
-SharePointListController.cs returns a set of responses to Home.js retrieved from a SharePoint List when the user clicks on SharePoint List as the source.
+- `SharePointListApi/appsettings.json`
+- `SharePointListApi/appsettings.Development.json`
+- Azure App Service application settings
+- Azure Key Vault secrets
 
-The SharePoint request is done through Graph API, so you will need to setup an app registration and with app permissions granted to Graph API for Sites.Read.All (or equivalent) to the app can read the SharePoint List.
+The default sample values use generic `MyCompany` names. Replace them with values for your own environment before deployment.
 
-There are a lot of more complicated auth scenarios you can build into add-ins and most of the samples out there try to use these approaches to build on the active user context.  For the purposes of this sample, we’re only interested in getting a SharePoint list that is rolling up data to all users, so it’s easier to approach this with a simple app auth flow.
+Required Key Vault secrets for SharePoint-backed operation:
 
-Similarly, you will need to provide the site name (or id) and list name (or id) in this code.
+- `SharePointSiteId`
+- `SharePointListId`
 
-*Tip:  Graph Explorer can be really helpful in validating these types of calls if you have problems with the Graph Query (get it working there first, and ensure the Graph returns what you expect.*
+Optional local-development fallback secrets if you enable client credential fallback:
 
+- `TenantId`
+- `ClientId`
+- `SharePointSecret`
 
-# Quick Start (without SharePoint)
+Production deployments should prefer Managed Identity instead of client secrets.
 
-1. Load the solution Visual Studio
+## Deployment
 
-2. Build->Clean Solution
+See [DEPLOYMENT.md](DEPLOYMENT.md) for full deployment instructions.
 
-3. Build->Rebuild Solution
+High-level production steps:
 
-4. Right click on the Solution and choose Configure Startup Projects…
+1. Deploy `SharePointListApi` to a HTTPS-capable hosting environment such as Azure App Service.
+2. Configure Key Vault access and required secrets.
+3. Enable Managed Identity for the web app where applicable.
+4. Update both manifest files to point to the production web app URL.
+5. Upload the manifests through Microsoft 365 Admin Center.
+6. Assign the add-ins to the intended users or groups.
 
-5. Choose Multiple Startup Projects and move SharePointListApi project to the top of the list (so it starts up first) and set to Debug
+## Security
 
-6. Set the Disclaimers project to Debug 
+See [SECURITY.md](SECURITY.md) for the security model and reporting guidance.
 
-7. Leave the DisclaimersOutlook project to None for now (it’s the same process to test it later)
+Important defaults:
 
-8. Click the Disclaimers project and you should see the project properties displayed in Visual Studio (this is where you can configure which Office App to test with, like Excel, PowerPoint, or Word)
+- Do not commit real secrets, client credentials, tenant-specific IDs, publish profiles, or `.user` files.
+- Use HTTPS for all add-in resources.
+- Prefer Managed Identity in production.
+- Keep SharePoint and Microsoft Graph permissions as narrow as practical.
+- Review rich text content before rendering or inserting it.
 
-9. Choose the Office Desktop Client and one of the desktop apps to start with (for instance [New Excel Workbook])
-    
- ![1-solution](https://github.com/breakpoint7/Disclaimers/assets/26799308/355ed072-5353-4eec-9acc-e2ec699986ec)
+## Development Guide
 
-10. Debug->Start Debugging
+See [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md) for architecture details, extension points, debugging tips, and common development tasks.
 
-If everything starts correctly, you should see the add-in loaded and a task pane that looks something like this:
+## Troubleshooting
 
- ![2-RunningAddIn](https://github.com/breakpoint7/Disclaimers/assets/26799308/1d4d3d9e-5626-40e4-8e53-3a95c2c2ee5e)
+Common checks:
 
-You should be able to click on Web API to get a list of hard coded response and picking one from the list will insert it into your Office App, wherever the cursor is currently located.
+- Confirm `SharePointListApi` is running before the add-in loads.
+- Confirm manifest URLs match the running web app URL.
+- Browse directly to `https://localhost:7057/Home.html` during local development.
+- Browse directly to `https://localhost:7057/api/disclaimer` to test the demo endpoint.
+- Check Office task pane developer tools for JavaScript errors.
+- Clear the Office web add-in cache if stale manifests or scripts keep loading.
 
-![successaddin](https://github.com/breakpoint7/Disclaimers/assets/26799308/9c320564-f53d-422b-ae9b-1130ce46aba2)
+Office cache location on Windows:
 
-If the add-in fails to load, check on the section below -- [Some Issues you might run into while debugging](https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-deployment-of-add-ins?view=o365-worldwide)
+```text
+%LOCALAPPDATA%\Microsoft\Office\16.0\Wef
+```
 
+## Contributing
 
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, style, and pull request guidance.
 
-# Configuring SharePoint for the sample
-1. From a SharePoint site, create a new list (you can start from a Blank list)
-2. Give it a name (e.g. –  “Disclaimers”) and remember the list name, as well as your site name, to use in later steps.
-3. The solution is looking for three columns (Title, Text, and Ver).  SharePoint always starts with a Title, so we’ll use that for the actual response.
-4. Add two other text columns, calling then “Text” and “Ver” to add a title for each response and version you might decide to use as some point.
-5. Add a new item to the list and provide some information to work with.  It should look something like this:
- ![3-SharePointList](https://github.com/breakpoint7/Disclaimers/assets/26799308/52a31dd3-fe84-410f-825b-18a6e755563b)
+## License
 
-6. For the Controller to use Graph API to access the SharePoint list, you’ll need to setup an app registration.
-Within the Azure Portal, navigate to your Entra tenant and App Registrations.  Create a new App Registration.  You should be able to use defaults, don’t worry about redirect APIs or any other settings at this point.  Give it a name, and record the Application (client) ID and the Directory (tenant) ID since you’ll need this in later steps.
-7. Navigate into Certificates & Secrets and create a new client secret.  Record this value for later steps.
-8. Navigate to API Permissions, choose Add Permission and choose Microsoft Graph.
-10. Choose Application Permission and then add the permission for Sites.ReadAll.
-11. You will need to Grant Admin consent for the permission you just added from the API Permissions screen after you add Sites.ReadAll.
- ![4-GraphPermissions](https://github.com/breakpoint7/Disclaimers/assets/26799308/0d42e3f9-fbfc-41c9-9139-56886bf0ba0f)
-
-
-12. Now, update the code in SharePointListControllers.cs with Task<IActionResult> Get() to provide the tenantId, clientId, clientSecret, siteId, and ListId from the previous steps.
-    
-<code>var tenantId = "<tenant id>";  // Tenant where this app is registered
-var clientId = "<app id>";  // Application (client) ID of the registered app
-var clientSecret = "<app secret>";  // Secret key of the registered app (keep this secure and do not hard code this value in your code -- this is for demo purposes only)
-var siteId = "<sharepoint site name or site id>";
-var listId = "<list name or list id>";</code>
-
-**DO NOT HARD CLIENT SECRETS INTO YOUR CODE - THIS IS FOR SAMPLE PURPOSES ONLY.  SECRETS SHOULD BE MANAGED FROM A KEY STORE SUCH AS AZURE KEY VAULT, ETC.**
-
-13. Make sure this is working before testing with the add-in.  You can rebuild the SharePointListApi project and start/debug it independently of the add-ins.
-    
-Browse to https://localhost:7057/api/SharePointList and make sure it’s returning your list items.    If you are getting results here, it should work with the add-in as well.
-![5-SharePointControllerResults](https://github.com/breakpoint7/Disclaimers/assets/26799308/a1f99c78-3d4a-4da4-9803-82dbc07cd412) 
-Browse to https://localhost:7057/home.html and you should see the list items returned as options in Home.html, which is the page the add-in will load.  If this works, your add-in should work as well.
- 
-![6-homepageinbrowser](https://github.com/breakpoint7/Disclaimers/assets/26799308/faac8ea4-6cc8-4f58-8108-6cb5b8c0d5f9)
-
-If this isn’t working, you probably need to double check your App Registration and/or the SharePoint site and list info.  
-Graph Explorer is super helpful for working out Graph API queries independently of your code, to make sure the site and list info work there. 
-https://graph.microsoft.com/v1.0/sites/{siteId}/lists/{listId}/items?expand=fields(select=Title,Text,Ver)
-For app registrations, see some of the support links below.
-
-
-## Some additional use cases
-Commit 2df19159140bd3f61962752b5e46909f9663d1dd added a few more uses cases to the sample.
-
-AltHome.html and AltHome.js were added and mapped to the Document (Word) manifest to allow for multiple selection of responses and insertion into document Headers and Footers.  Simply put, you can pick multiple responses and instead of inserting into the cursor position, it adds a couple of buttons to insert into a Document's header or footer section.
-
-You might also want to prioritize the order of the responses provided to the user (most important or common responses appear at the top of the list, etc.).  An easy way to do this is to modify the SharePointListController to user an OrderBy in the Graph query.  This depends on a "Priority" (Number) column being setup in your list.  Simply add a "Priority" column, defined as a Number and you can put a numeric value in each list item that will be used to sort the query results.
-Set bPrioritizeList = true in GetSharePointListItems and it will use the alternate Graph query with an OrderBy query param to sort the list you get back.
-
-## Some issues you might run into while debugging
-
-The DisclaimersOutlook add-in will only appear when you creating a new mail message since it only interacts with the compose surface (not valid in other contexts)
-
-The manifests in this solution are configured to use https://localhost:7057.  If your environment uses something else, you’ll need to update all the URL references in the manifests.
-
-Debugging Office add-ins with Visual Studio involve a lot of moving parts and there are a lot of things that can go wrong—Office Client version compatibility, user/license, MFA, and security policies to name a few.  I won’t try to cover all of them here-- check out the Office add-in docs for a more comprehensive list.
-
-If the add-in tries to start before the Web App is up and running, you may see an add-in error with a Retry prompt like this:
-![7-ErrorRetry](https://github.com/breakpoint7/Disclaimers/assets/26799308/6f3f277f-3c12-4ff7-8d0f-ba953582eebc)
-
- 
-Wait for your Web App to completely start and then click Retry.
-
-You can double check to make sure the Web App is up and serving the add-in content, by browsing in the Web App windows to, for example: https://localhost:7057/home.html
-
-If you can load it in the browser, you’re add in should be able to load it as well and the Retry should then work.
-
-As of the time I created this, VS2022 would frequently fail to load and debug the add-on on first run and clicking Restart never worked.
-![8-ErrorRestart](https://github.com/breakpoint7/Disclaimers/assets/26799308/a0eac09a-5c41-4998-b400-5416d84a4aab)
-
- 
-If you run into this, stop the debugger – change the startup project to Start without Debugging and start debugging again.  You should be able to change it back to Start later and it usually works after that.
-
-You can also debug after the add-on loads by clicking on the task pane and choosing Attach Debugger as an alternate method.
-
- 
-![9-AttachDebugger](https://github.com/breakpoint7/Disclaimers/assets/26799308/f814655c-52cf-463d-aeca-8b11e2355448)
-
-
-# Deploying to all users
-
-Once your add-in is tested and ready to share, there are a few basic things you’ll want to do before deploying it broadly.
-
-1. Deploy your Web App somewhere that is accessible by your users.
-2. Update the manifests with any changes you need to make for Provider Name, Display Name, etc.  You will also need to update URLs to point to your Web App (where you deployed that).
-3. An easy way to deploy add-ins to enterprise users is via the Microsoft 365 Admin Center.
-4. Navigate to https://admin.microsoft.com/, drill into Settings and Integrated Apps.
-5. Upload Custom App (Office Add-In), provide the manifest each add-in (you’ll have to do this twice since there are two add-ins in this solution) and decide which users you want to see these.  
-Sometimes it takes a little while for them to show up after you do this.
-See Deploy add-ins in the admin center - Microsoft 365 admin | Microsoft Learn and Centralized Deployment FAQ | Microsoft Learn (https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-deployment-of-add-ins?view=o365-worldwide) for more info.
-
-
-**Additional/Supporting Documentation:**
-
-https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app
-
-https://learn.microsoft.com/en-us/graph/api/list-get
-
-https://learn.microsoft.com/en-us/graph/api/resources/site?view=graph-rest-1.0#id-property 
-
-Deploy add-ins in the admin center - Microsoft 365 admin | Microsoft Learn (https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-deployment-of-add-ins?view=o365-worldwide)
-
-Guidance for deploying Office Add-ins on government clouds - Office Add-ins | Microsoft Learn (https://learn.microsoft.com/en-us/office/dev/add-ins/publish/government-cloud-guidance)
-
-
-
-
-
-
-
+This project is licensed under the terms in [LICENSE](LICENSE).

@@ -14,14 +14,14 @@
 
   <!--Version. Updates from the store only get triggered if there is a version change. -->
   <Version>1.0.0.0</Version>
-  <ProviderName>Developer Support</ProviderName>
+  <ProviderName>MyCompany Security Engineering</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
-  <DisplayName DefaultValue="Disclaimers" />
-  <Description DefaultValue="Standard Disclaimers"/>
-  <IconUrl DefaultValue="https://localhost:7057/Images/Button32x32.png" />
+  <DisplayName DefaultValue="MyCompany Disclaimers for Outlook" />
+  <Description DefaultValue="Insert standard legal disclaimers and boilerplate text into your Outlook messages with a single click."/>
+  <IconUrl DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button32x32.png" />
 
-  <SupportUrl DefaultValue="http://www.contoso.com" />
+  <SupportUrl DefaultValue="http://www.MyCompany.com" />
   <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
   <AppDomains>
     <AppDomain>AppDomain1</AppDomain>
@@ -41,7 +41,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://localhost:7057/"/>
+        <SourceLocation DefaultValue="https://mycompanydisclaimers.azurewebsites.us/"/>
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -96,25 +96,25 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://localhost:7057/Images/Button16x16.png"/>
-        <bt:Image id="icon32" DefaultValue="https://localhost:7057/Images/Button32x32.png"/>
-        <bt:Image id="icon80" DefaultValue="https://localhost:7057/Images/Button80x80.png"/>
+        <bt:Image id="icon16" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button16x16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button32x32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button80x80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="functionFile" DefaultValue="https://localhost:7057/Functions/FunctionFile.html"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:7057/Home.html"/>
+        <bt:Url id="functionFile" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Functions/FunctionFile.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Home.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
-        <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Insert disclaimer"/>
-        <bt:String id="TaskpaneButton.Title" DefaultValue="Insert disclaimer"/>
-        <bt:String id="FunctionButton.Label" DefaultValue="Insert default disclaimer"/>
-        <bt:String id="FunctionButton.Title" DefaultValue="Insert default disclaimer"/>
+        <bt:String id="groupLabel" DefaultValue="MyCompany Disclaimers"/>
+        <bt:String id="customTabLabel"  DefaultValue="Disclaimers"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Insert Disclaimers"/>
+        <bt:String id="TaskpaneButton.Title" DefaultValue="Insert Disclaimers"/>
+        <bt:String id="FunctionButton.Label" DefaultValue="Insert Default Disclaimer"/>
+        <bt:String id="FunctionButton.Title" DefaultValue="Insert Default Disclaimer"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Displays a list of disclaimers and allows you to insert into a message."/>
-        <bt:String id="FunctionButton.Tooltip" DefaultValue="Inserts the disclaimer into your message."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Choose from a list of disclaimers and boilerplate text to insert into your message."/>
+        <bt:String id="FunctionButton.Tooltip" DefaultValue="Quickly insert the default disclaimer into your message."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

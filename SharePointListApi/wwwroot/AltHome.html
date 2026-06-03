@@ -1,8 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <!-- Meta refresh tag to redirect to Home.html -->
+    <meta http-equiv="refresh" content="0;url=Home.html">
 
     <script src="Scripts/jquery-3.6.0.js" type="text/javascript"></script>
     <script src="Scripts/MessageBanner.js" type="text/javascript"></script>
@@ -31,17 +33,16 @@
 <body class="ms-font-m ms-welcome">
     <div id="content-header">
         <div class="padding">
-            <h1>Contoso</h1>
+            <h1>MyCompany</h1>
         </div>
     </div>
     <div id="content-main">
         <div class="padding">
+            <a href="Home.html" class="ms-Link">Switch to v2</a>
             <p>Content Source</p>
             <div id="disclaimer-source"></div>
+            <p>Position your cursor and choose the buttons below to add content to it.</p>
             <div id="disclaimer-list"></div>
-            <br />
-            <button id="insertSelectedDisclaimersAsHeader" class="ms-Button">Insert Selected as Header</button>
-            <button id="insertSelectedDisclaimersAsFooter" class="ms-Button">Insert Selected as Footer</button>
         </div>
     </div>
 </body>

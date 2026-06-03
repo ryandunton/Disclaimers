@@ -26,47 +26,58 @@ namespace SharePointListApi.Controllers
     {
 
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IHostEnvironment _environment;
 
-        public DisclaimerController(IHttpClientFactory clientFactory)
+        public DisclaimerController(IHttpClientFactory clientFactory, IHostEnvironment environment)
         {
             _clientFactory = clientFactory;
+            _environment = environment;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var items = new List<Disclaimer>
+            try
             {
-                new Disclaimer
+                var items = new List<Disclaimer>
                 {
-                    Description = "Standard Disclaimer",
-                    Text = "This is a standard disclaimer.",
-                    Version = "v1.0"
-                },
-                new Disclaimer
-                {
-                    Description = "GCCH Disclaimer",
-                    Text = "Content subject to GCCH restrictions.",
-                    Version = "v1.0"
-                },
-                new Disclaimer
-                {
-                    Description = "ITAR Disclaimer",
-                    Text = "Content subject to ITAR restrictions.",
-                    Version = "v1.0"
-                },
-                new Disclaimer
-                {
-                    Description = "Random Note",
-                    Text = "This is a random note",
-                    Version = "1.0"
-                }
-            };
+                    new Disclaimer
+                    {
+                        Description = "Standard Disclaimer",
+                        Text = "This is a standard disclaimer.",
+                        Version = "v1.0"
+                    },
+                    new Disclaimer
+                    {
+                        Description = "GCCH Disclaimer",
+                        Text = "Content subject to GCCH restrictions.",
+                        Version = "v1.0"
+                    },
+                    new Disclaimer
+                    {
+                        Description = "ITAR Disclaimer",
+                        Text = "Content subject to ITAR restrictions.",
+                        Version = "v1.0"
+                    },
+                    new Disclaimer
+                    {
+                        Description = "Random Note",
+                        Text = "This is a random note",
+                        Version = "1.0"
+                    }
+                };
 
-            var result = new { value = items };
-            return Ok(result);
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                // Provide a proper JSON response for errors
+                var errorMessage = _environment.IsDevelopment()
+                    ? $"An error occurred: {ex.Message}"
+                    : "An error occurred while processing your request.";
+                
+                return StatusCode(500, new { error = errorMessage });
+            }
         }
-
-
     }
 }

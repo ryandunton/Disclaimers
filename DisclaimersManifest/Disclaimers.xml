@@ -14,15 +14,15 @@
 
   <!--Version. Updates from the store only get triggered if there is a version change. -->
   <Version>1.0.0.0</Version>
-  <ProviderName>Developer Support</ProviderName>
+  <ProviderName>MyCompany Security Engineering</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
-  <DisplayName DefaultValue="Disclaimers" />
-  <Description DefaultValue="Standard Disclaimers"/>
+  <DisplayName DefaultValue="MyCompany Disclaimers" />
+  <Description DefaultValue="Insert standard legal disclaimers and boilerplate text into Word, Excel, and PowerPoint documents with a single click."/>
   <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
-  <IconUrl DefaultValue="https://localhost:7057/Images/Button32x32.png" />
+  <IconUrl DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button32x32.png" />
 
-  <SupportUrl DefaultValue="http://www.contoso.com" />
+  <SupportUrl DefaultValue="https://www.MyCompany.com/" />
   <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
   <AppDomains>
     <AppDomain>AppDomain1</AppDomain>
@@ -38,7 +38,7 @@
     <Host Name="Presentation"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:7057/" />
+    <SourceLocation DefaultValue="https://mycompanydisclaimers.azurewebsites.us/" />
   </DefaultSettings>
   <!-- End TaskPane Mode integration.  -->
 
@@ -60,54 +60,54 @@
           <!--"This code enables a customizable message to be displayed when the add-in is loaded successfully upon individual install."-->
           <GetStarted>
             <!-- Title of the Getting Started callout. The resid attribute points to a ShortString resource -->
-            <Title resid="Contoso.GetStarted.Title"/>
+            <Title resid="MyCompany.GetStarted.Title"/>
 
             <!-- Description of the Getting Started callout. resid points to a LongString resource -->
-            <Description resid="Contoso.GetStarted.Description"/>
+            <Description resid="MyCompany.GetStarted.Description"/>
 
             <!-- Points to a URL resource which details how the add-in should be used. -->
-            <LearnMoreUrl resid="Contoso.GetStarted.LearnMoreUrl"/>
+            <LearnMoreUrl resid="MyCompany.GetStarted.LearnMoreUrl"/>
           </GetStarted>
           <!-- Function file is a HTML page that includes the JavaScript where functions for ExecuteAction will be called. 
             Think of the FunctionFile as the code behind ExecuteFunction. -->
-          <FunctionFile resid="Contoso.DesktopFunctionFile.Url" />
+          <FunctionFile resid="MyCompany.DesktopFunctionFile.Url" />
 
           <!-- PrimaryCommandSurface is the main Office Ribbon. -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
             <OfficeTab id="TabHome">
               <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
-              <Group id="Contoso.Group1">
+              <Group id="MyCompany.Group1">
                 <!-- Label for your group. resid must point to a ShortString resource. -->
-                <Label resid="Contoso.Group1Label" />
+                <Label resid="MyCompany.Group1Label" />
                 <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
                 <!-- Use PNG icons. All URLs on the resources section must use HTTPS. -->
                 <Icon>
-                  <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                  <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                  <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                  <bt:Image size="16" resid="MyCompany.tpicon_16x16" />
+                  <bt:Image size="32" resid="MyCompany.tpicon_32x32" />
+                  <bt:Image size="80" resid="MyCompany.tpicon_80x80" />
                 </Icon>
 
                 <!-- Control. It can be of type "Button" or "Menu". -->
-                <Control xsi:type="Button" id="Contoso.TaskpaneButton">
-                  <Label resid="Contoso.TaskpaneButton.Label" />
+                <Control xsi:type="Button" id="MyCompany.TaskpaneButton">
+                  <Label resid="MyCompany.TaskpaneButton.Label" />
                   <Supertip>
                     <!-- ToolTip title. resid must point to a ShortString resource. -->
-                    <Title resid="Contoso.TaskpaneButton.Label" />
+                    <Title resid="MyCompany.TaskpaneButton.Label" />
                     <!-- ToolTip description. resid must point to a LongString resource. -->
-                    <Description resid="Contoso.TaskpaneButton.Tooltip" />
+                    <Description resid="MyCompany.TaskpaneButton.Tooltip" />
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                    <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                    <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                    <bt:Image size="16" resid="MyCompany.tpicon_16x16" />
+                    <bt:Image size="32" resid="MyCompany.tpicon_32x32" />
+                    <bt:Image size="80" resid="MyCompany.tpicon_80x80" />
                   </Icon>
 
                   <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>ButtonId1</TaskpaneId>
                     <!-- Provide a URL resource id for the location that will be displayed on the task pane. -->
-                    <SourceLocation resid="Contoso.AltTaskpane.Url" />
+                    <SourceLocation resid="MyCompany.AltTaskpane.Url" />
                   </Action>
                 </Control>
               </Group>
@@ -126,54 +126,54 @@
         <!--"This code enables a customizable message to be displayed when the add-in is loaded successfully upon individual install."-->
         <GetStarted>
           <!-- Title of the Getting Started callout. The resid attribute points to a ShortString resource -->
-          <Title resid="Contoso.GetStarted.Title"/>
+          <Title resid="MyCompany.GetStarted.Title"/>
 
           <!-- Description of the Getting Started callout. resid points to a LongString resource -->
-          <Description resid="Contoso.GetStarted.Description"/>
+          <Description resid="MyCompany.GetStarted.Description"/>
 
           <!-- Points to a URL resource which details how the add-in should be used. -->
-          <LearnMoreUrl resid="Contoso.GetStarted.LearnMoreUrl"/>
+          <LearnMoreUrl resid="MyCompany.GetStarted.LearnMoreUrl"/>
         </GetStarted>
         <!-- Function file is a HTML page that includes the JavaScript where functions for ExecuteAction will be called. 
             Think of the FunctionFile as the code behind ExecuteFunction. -->
-        <FunctionFile resid="Contoso.DesktopFunctionFile.Url" />
+        <FunctionFile resid="MyCompany.DesktopFunctionFile.Url" />
 
         <!-- PrimaryCommandSurface is the main Office Ribbon. -->
         <ExtensionPoint xsi:type="PrimaryCommandSurface">
           <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
           <OfficeTab id="TabHome">
             <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
-            <Group id="Contoso.Group1">
+            <Group id="MyCompany.Group1">
               <!-- Label for your group. resid must point to a ShortString resource. -->
-              <Label resid="Contoso.Group1Label" />
+              <Label resid="MyCompany.Group1Label" />
               <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
               <!-- Use PNG icons. All URLs on the resources section must use HTTPS. -->
               <Icon>
-                <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                <bt:Image size="16" resid="MyCompany.tpicon_16x16" />
+                <bt:Image size="32" resid="MyCompany.tpicon_32x32" />
+                <bt:Image size="80" resid="MyCompany.tpicon_80x80" />
               </Icon>
 
               <!-- Control. It can be of type "Button" or "Menu". -->
-              <Control xsi:type="Button" id="Contoso.TaskpaneButton">
-                <Label resid="Contoso.TaskpaneButton.Label" />
+              <Control xsi:type="Button" id="MyCompany.TaskpaneButton">
+                <Label resid="MyCompany.TaskpaneButton.Label" />
                 <Supertip>
                   <!-- ToolTip title. resid must point to a ShortString resource. -->
-                  <Title resid="Contoso.TaskpaneButton.Label" />
+                  <Title resid="MyCompany.TaskpaneButton.Label" />
                   <!-- ToolTip description. resid must point to a LongString resource. -->
-                  <Description resid="Contoso.TaskpaneButton.Tooltip" />
+                  <Description resid="MyCompany.TaskpaneButton.Tooltip" />
                 </Supertip>
                 <Icon>
-                  <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                  <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                  <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                  <bt:Image size="16" resid="MyCompany.tpicon_16x16" />
+                  <bt:Image size="32" resid="MyCompany.tpicon_32x32" />
+                  <bt:Image size="80" resid="MyCompany.tpicon_80x80" />
                 </Icon>
 
                 <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
                 <Action xsi:type="ShowTaskpane">
                   <TaskpaneId>ButtonId1</TaskpaneId>
                   <!-- Provide a URL resource id for the location that will be displayed on the task pane. -->
-                  <SourceLocation resid="Contoso.Taskpane.Url" />
+                  <SourceLocation resid="MyCompany.Taskpane.Url" />
                 </Action>
               </Control>
             </Group>
@@ -189,54 +189,54 @@
         <!--"This code enables a customizable message to be displayed when the add-in is loaded successfully upon individual install."-->
         <GetStarted>
           <!-- Title of the Getting Started callout. The resid attribute points to a ShortString resource -->
-          <Title resid="Contoso.GetStarted.Title"/>
+          <Title resid="MyCompany.GetStarted.Title"/>
 
           <!-- Description of the Getting Started callout. resid points to a LongString resource -->
-          <Description resid="Contoso.GetStarted.Description"/>
+          <Description resid="MyCompany.GetStarted.Description"/>
 
           <!-- Points to a URL resource which details how the add-in should be used. -->
-          <LearnMoreUrl resid="Contoso.GetStarted.LearnMoreUrl"/>
+          <LearnMoreUrl resid="MyCompany.GetStarted.LearnMoreUrl"/>
         </GetStarted>
         <!-- Function file is a HTML page that includes the JavaScript where functions for ExecuteAction will be called. 
             Think of the FunctionFile as the code behind ExecuteFunction. -->
-        <FunctionFile resid="Contoso.DesktopFunctionFile.Url" />
+        <FunctionFile resid="MyCompany.DesktopFunctionFile.Url" />
 
         <!-- PrimaryCommandSurface is the main Office Ribbon. -->
         <ExtensionPoint xsi:type="PrimaryCommandSurface">
           <!-- Use OfficeTab to extend an existing Tab. Use CustomTab to create a new tab. -->
           <OfficeTab id="TabHome">
             <!-- Ensure you provide a unique id for the group. Recommendation for any IDs is to namespace using your company name. -->
-            <Group id="Contoso.Group1">
+            <Group id="MyCompany.Group1">
               <!-- Label for your group. resid must point to a ShortString resource. -->
-              <Label resid="Contoso.Group1Label" />
+              <Label resid="MyCompany.Group1Label" />
               <!-- Icons. Required sizes 16,32,80, optional 20, 24, 40, 48, 64. Strongly recommended to provide all sizes for great UX. -->
               <!-- Use PNG icons. All URLs on the resources section must use HTTPS. -->
               <Icon>
-                <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                <bt:Image size="16" resid="MyCompany.tpicon_16x16" />
+                <bt:Image size="32" resid="MyCompany.tpicon_32x32" />
+                <bt:Image size="80" resid="MyCompany.tpicon_80x80" />
               </Icon>
 
               <!-- Control. It can be of type "Button" or "Menu". -->
-              <Control xsi:type="Button" id="Contoso.TaskpaneButton">
-                <Label resid="Contoso.TaskpaneButton.Label" />
+              <Control xsi:type="Button" id="MyCompany.TaskpaneButton">
+                <Label resid="MyCompany.TaskpaneButton.Label" />
                 <Supertip>
                   <!-- ToolTip title. resid must point to a ShortString resource. -->
-                  <Title resid="Contoso.TaskpaneButton.Label" />
+                  <Title resid="MyCompany.TaskpaneButton.Label" />
                   <!-- ToolTip description. resid must point to a LongString resource. -->
-                  <Description resid="Contoso.TaskpaneButton.Tooltip" />
+                  <Description resid="MyCompany.TaskpaneButton.Tooltip" />
                 </Supertip>
                 <Icon>
-                  <bt:Image size="16" resid="Contoso.tpicon_16x16" />
-                  <bt:Image size="32" resid="Contoso.tpicon_32x32" />
-                  <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                  <bt:Image size="16" resid="MyCompany.tpicon_16x16" />
+                  <bt:Image size="32" resid="MyCompany.tpicon_32x32" />
+                  <bt:Image size="80" resid="MyCompany.tpicon_80x80" />
                 </Icon>
 
                 <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
                 <Action xsi:type="ShowTaskpane">
                   <TaskpaneId>ButtonId1</TaskpaneId>
                   <!-- Provide a URL resource id for the location that will be displayed on the task pane. -->
-                  <SourceLocation resid="Contoso.Taskpane.Url" />
+                  <SourceLocation resid="MyCompany.Taskpane.Url" />
                 </Action>
               </Control>
             </Group>
@@ -251,26 +251,26 @@
     <!-- You can use resources across hosts and form factors. -->
     <Resources>
       <bt:Images>
-        <bt:Image id="Contoso.tpicon_16x16" DefaultValue="https://localhost:7057/Images/Button16x16.png" />
-        <bt:Image id="Contoso.tpicon_32x32" DefaultValue="https://localhost:7057/Images/Button32x32.png" />
-        <bt:Image id="Contoso.tpicon_80x80" DefaultValue="https://localhost:7057/Images/Button80x80.png" />
+        <bt:Image id="MyCompany.tpicon_16x16" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button16x16.png" />
+        <bt:Image id="MyCompany.tpicon_32x32" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button32x32.png" />
+        <bt:Image id="MyCompany.tpicon_80x80" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Images/Button80x80.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Contoso.DesktopFunctionFile.Url" DefaultValue="https://localhost:7057/Functions/FunctionFile.html" />
-        <bt:Url id="Contoso.Taskpane.Url" DefaultValue="https://localhost:7057/Home.html" />
-        <bt:Url id="Contoso.AltTaskpane.Url" DefaultValue="https://localhost:7057/AltHome.html" />
-        <bt:Url id="Contoso.GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812" />
+        <bt:Url id="MyCompany.DesktopFunctionFile.Url" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Functions/FunctionFile.html" />
+        <bt:Url id="MyCompany.Taskpane.Url" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Home.html" />
+        <bt:Url id="MyCompany.AltTaskpane.Url" DefaultValue="https://mycompanydisclaimers.azurewebsites.us/Home.html" />
+        <bt:Url id="MyCompany.GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812" />
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
-        <bt:String id="Contoso.TaskpaneButton.Label" DefaultValue="Show Taskpane" />
-        <bt:String id="Contoso.Group1Label" DefaultValue="Commands Group" />
-        <bt:String id="Contoso.GetStarted.Title" DefaultValue="Get started with your sample add-in!" />
+        <bt:String id="MyCompany.TaskpaneButton.Label" DefaultValue="Insert Disclaimers" />
+        <bt:String id="MyCompany.Group1Label" DefaultValue="MyCompany Disclaimers" />
+        <bt:String id="MyCompany.GetStarted.Title" DefaultValue="Get started with Disclaimers!" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
-        <bt:String id="Contoso.TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane" />
-        <bt:String id="Contoso.GetStarted.Description" DefaultValue="Your sample add-in loaded succesfully. Go to the HOME tab and click the 'Show Taskpane' button to get started." />
+        <bt:String id="MyCompany.TaskpaneButton.Tooltip" DefaultValue="Open the Disclaimers panel to insert disclaimers and boilerplate text" />
+        <bt:String id="MyCompany.GetStarted.Description" DefaultValue="The Disclaimers add-in loaded successfully. Go to the HOME tab and click the 'Insert Disclaimers' button to get started." />
       </bt:LongStrings>
     </Resources>
     
